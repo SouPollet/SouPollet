@@ -2,6 +2,8 @@
 {
     margin: 0;
     padding: 0;
+    text-decoration: none;
+    color: inherit;
 }
 
 html,
@@ -20,5 +22,6 @@ body
     outline: none;
 }
 .intro{
+    color:red;
     text-align: center;
 }
