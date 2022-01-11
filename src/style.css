@@ -8,7 +8,6 @@ html,
 body
 {
     height: 100vh;
-    font-family: 'Poppins';
 }
 
 .webgl
@@ -17,4 +16,8 @@ body
     top: 0;
     left: 0;
     outline: none;
+}
+.intro{
+    color:red;
+    text-align: center;
 }
