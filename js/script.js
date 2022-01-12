@@ -1,23 +1,47 @@
-import './style.css'
-import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import * as dat from 'dat.gui'
-import { Vector3 } from 'three'
+import * as THREE from 'https://cdn.skypack.dev/three@0.136.0'
+import { OrbitControls } from 'https://cdn.skypack.dev/three@0.136.0/examples/jsm/controls/OrbitControls.js'
+import { Vector3 } from 'https://cdn.skypack.dev/three@0.136.0'
 
 //Loading
 const textureLoader = new THREE.TextureLoader()
-const saturnTexture = textureLoader.load('/Saturn.jpg')
-const ringTexture = textureLoader.load('/satRing.jpg')
-const shadowTexture = textureLoader.load('/shadow.png')
-
-// Debug
-const gui = new dat.GUI()
+const saturnTexture = textureLoader.load('textures/Saturn.jpg')
+const ringTexture = textureLoader.load('textures/satRing.jpg')
+const shadowTexture = textureLoader.load('textures/shadow.png')
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
+var divChara = document.getElementsByClassName('character');
+
+var CANVAS_WIDTH = 850,
+    CANVAS_HEIGHT = 500;
 
 // Scene
 const scene = new THREE.Scene()
+
+
+/**
+ * Camera
+ */
+// Base camera
+const camera = new THREE.PerspectiveCamera(75, CANVAS_WIDTH / CANVAS_HEIGHT, 0.1, 400)
+camera.position.x = 0
+camera.position.y = -.1
+camera.position.z = 3
+scene.add(camera)
+
+// Controls
+const controls = new OrbitControls(camera, canvas)
+controls.enableDamping = true
+
+/**
+ * Renderer
+ */
+const renderer = new THREE.WebGLRenderer({
+    canvas: canvas,
+    alpha : true
+})
+renderer.setSize(CANVAS_WIDTH, CANVAS_HEIGHT)
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 // Objects
 const saturn = new THREE.SphereBufferGeometry(1,32,16);
@@ -61,6 +85,7 @@ shadow.position.y=-1.8
 shadow.rotation.x = -1.5
 scene.add(shadow)
 
+
 // Lights
 
 const pointLight = new THREE.PointLight(0xffffff, 1)
@@ -74,53 +99,6 @@ pointLight2.position.x = -5
 pointLight2.position.y = -3.5
 pointLight2.position.z = -4
 scene.add(pointLight2)
-
-/**
- * Sizes
- */
-const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight
-}
-
-window.addEventListener('resize', () =>
-{
-    // Update sizes
-    sizes.width = window.innerWidth
-    sizes.height = window.innerHeight
-
-    // Update camera
-    camera.aspect = sizes.width / sizes.height
-    camera.updateProjectionMatrix()
-
-    // Update renderer
-    renderer.setSize(sizes.width, sizes.height)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-})
-
-/**
- * Camera
- */
-// Base camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 400)
-camera.position.x = 0
-camera.position.y = -.1
-camera.position.z = 4
-scene.add(camera)
-
-// Controls
-const controls = new OrbitControls(camera, canvas)
-controls.enableDamping = true
-
-/**
- * Renderer
- */
-const renderer = new THREE.WebGLRenderer({
-    canvas: canvas,
-    alpha : true
-})
-renderer.setSize(sizes.width, sizes.height)
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 /**
  * Animate
